@@ -6,7 +6,7 @@ import mimetypes
 class TextEditor:
     file_name = "Untitled.txt"   # Default file name
     file_content = ""          # Content in a new file
-    file_saved_status = False         # File saved status (Default = False)
+    file_saved_status = False         # File is saved or not
 
     def __init__(self, master):
         self.master = master
@@ -24,10 +24,11 @@ class TextEditor:
 
         # Sub Menu (Edit Menu)
         self.edit_menu = tk.Menu(self.menu_bar, tearoff=False)
-        space = " " * 16
-        edit_menu_command_names = [ f"Undo{space}Ctrl+Z", f"Redo{space} Ctrl+Y;",
-            f"Cut {space}  Ctrl+X", f"Copy{space}Ctrl+C", f"Paste{space}Ctrl+V"]
-        edit_menu_commands = [self.undo, self.redo, self.cut_text, self.copy_text, self.paste_text]
+        space = " " * 18
+        edit_menu_command_names = [ f"Undo{space}Ctrl+Z", f"Redo {space}Ctrl+Y;", f"Cut  {space} Ctrl+X",
+            f"Copy{space}Ctrl+C", f"Paste{space}Ctrl+V;", f"Select All{space[0:-7]}Ctrl+A", "Clear All"]
+        edit_menu_commands = [self.undo, self.redo, self.cut_text, self.copy_text, self.paste_text,
+            self.select_all_text, self.clear_all_text]
 
         self.add_menu_command(self.edit_menu, "Edit", edit_menu_command_names, edit_menu_commands)
 
@@ -161,6 +162,12 @@ class TextEditor:
 
     def redo(self):
         self.text_area.event_generate("<<Redo>>")
+
+    def select_all_text(self):
+        self.text_area.event_generate("<<SelectAll>>")
+
+    def clear_all_text(self):
+        self.text_area.delete(1.0, tk.END)
 
     # 3. Help Sub Menu Command
     def about_msg(self):
