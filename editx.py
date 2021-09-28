@@ -1,12 +1,13 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter import font
 import mimetypes
 
 class TextEditor:
-    file_name = "Untitled.txt"   # Default file name
+    file_name = "Untitled.txt"     # Default file name
     file_content = ""          # Content in a new file
-    file_saved_status = False         # File is saved or not
+    file_saved_status = False        # File is saved or not
 
     def __init__(self, master):
         self.master = master
@@ -32,8 +33,16 @@ class TextEditor:
 
         self.add_menu_command(self.edit_menu, "Edit", edit_menu_command_names, edit_menu_commands)
 
+        # Sub Menu (Text Menu)
+        self.text_menu = tk.Menu(self.menu_bar, tearoff=False)
+
+        text_menu_command_names = ["Bold", "Italic"]
+        text_menu_commands = [self.bold_text, self.italic_text]
+
+        self.add_menu_command(self.text_menu, "Text", text_menu_command_names, text_menu_commands)
+
         # Sub Menu (Help Menu)
-        self.help_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.help_menu = tk.Menu(self.menu_bar, tearoff=False)
 
         self.add_menu_command(self.help_menu, "Help", ["About"], [self.about_msg])
 
@@ -169,9 +178,36 @@ class TextEditor:
     def clear_all_text(self):
         self.text_area.delete(1.0, tk.END)
 
-    # 3. Help Sub Menu Command
+    # 3. Text Sub Menu Command
+    def bold_text(self):
+        # Define Font
+        bold_font = font.Font(self.text_area, self.text_area.cget("font"))
+        bold_font.configure(weight="bold")
+        # Configure Tag
+        self.text_area.tag_configure("bold", font=bold_font)
+        current_tags = self.text_area.tag_names("sel.first")
+        # Check if the selected text is bold or not
+        if "bold" in current_tags:
+            self.text_area.tag_remove("bold", "sel.first", "sel.last")
+        else:
+            self.text_area.tag_add("bold", "sel.first", "sel.last")
+
+    def italic_text(self):
+        # Define Font
+        italic_font = font.Font(self.text_area, self.text_area.cget("font"))
+        italic_font.configure(slant="italic")
+        # Configure Tag
+        self.text_area.tag_configure("italic", font=italic_font)
+        current_tags = self.text_area.tag_names("sel.first")
+        # Check if the selected text is bold or not
+        if "italic" in current_tags:
+            self.text_area.tag_remove("italic", "sel.first", "sel.last")
+        else:
+            self.text_area.tag_add("italic", "sel.first", "sel.last")
+
+    # 4. Help Sub Menu Command
     def about_msg(self):
-        messagebox.showinfo("EditX", "Version : 1.0\n\nDeveloped by Kunal Dhanwaria")
+        messagebox.showinfo("EditX", "Version : 2.0\n\nDeveloped by Kunal Dhanwaria")
 
 if __name__ == "__main__":
 

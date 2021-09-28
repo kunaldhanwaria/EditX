@@ -12,10 +12,10 @@ A simple text editor app using python's tkinter module.
   
 ## Features
 
+- Unsaved changes detection
 - Undo and Redo events
 - Keyboard shortcuts
-- More features coming soon
+- Bold and Italics text
 
-Considering its functionalities you can call it Notepad--
 
   
